@@ -1,6 +1,6 @@
 package com.bankplus.security;
 
-import com.ashin.model.User;
+import com.bankplus.model.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
