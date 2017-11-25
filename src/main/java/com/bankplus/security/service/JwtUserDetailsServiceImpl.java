@@ -1,8 +1,8 @@
 package com.bankplus.security.service;
 
-import com.ashin.DAO.AccountDAO;
-import com.ashin.model.User;
-import com.ashin.security.JwtUserFactory;
+import com.bankplus.DAO.CustomerDAO;
+import com.bankplus.model.User;
+import com.bankplus.security.JwtUserFactory;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,7 +17,7 @@ public class JwtUserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        AccountDAO accountDAO = new AccountDAO();
+        CustomerDAO accountDAO = new CustomerDAO();
         User user = accountDAO.getUserByUsername(username);
 
         if (user == null) {

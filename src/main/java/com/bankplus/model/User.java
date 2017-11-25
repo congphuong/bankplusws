@@ -3,9 +3,6 @@ package com.bankplus.model;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Khuong on 2017-06-05.
- */
 public class User {
     private int userId;
     private String username;
@@ -86,5 +83,16 @@ public class User {
 
     public boolean getEnabled() {
         return true;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId=" + userId +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", chucVu='" + chucVu + '\'' +
+                ", maChucVu=" + maChucVu +
+                '}';
     }
 }

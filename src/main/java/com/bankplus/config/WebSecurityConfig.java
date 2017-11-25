@@ -1,7 +1,8 @@
 package com.bankplus.config;
 
-import com.ashin.security.JwtAuthenticationEntryPoint;
-import com.ashin.security.JwtAuthenticationTokenFilter;
+
+import com.bankplus.security.JwtAuthenticationEntryPoint;
+import com.bankplus.security.JwtAuthenticationTokenFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
