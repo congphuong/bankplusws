@@ -22,9 +22,9 @@ public class ConnectionPool extends BasePoolableObjectFactory {
 
     @Override
     public Object makeObject() throws Exception {
-        Class.forName("com.mysql.jdbc.Driver").newInstance();
-        String url = "jdbc:mysql://" + host + ":" + port + "/"
-                + schema + "?autoReconnectForPools=true";
+        Class.forName("oracle.jdbc.driver.OracleDriver");
+        String url = "jdbc:oracle:thin:@" + host + ":" + port + ":"
+                + schema;
         return DriverManager.getConnection(url, user, password);
     }
 }
