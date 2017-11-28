@@ -186,17 +186,13 @@ begin
     select tongtien into v_tongtien from wallet where user_id = :NEW.user_from;
     if :NEW.exchange_type=1 then
              update wallet set tongtien = tongtien + :NEW.exchange_cost where user_id = :NEW.user_from;
-             insert into wallet_history values (WALLETHISTORY_ID.NEXTVAL, :NEW.user_from, :NEW.exchange_type, :NEW.exchange_cost, current_timestamp);
-    end if;
+             end if;
     if :NEW.exchange_type=3 and :NEW.exchange_cost < v_tongtien then      
              update wallet set tongtien = tongtien - :NEW.exchange_cost where user_id = :NEW.user_from;
              update wallet set tongtien = tongtien + :NEW.exchange_cost where user_id = :NEW.user_to;
-             insert into wallet_history values (WALLETHISTORY_ID.NEXTVAL, :NEW.user_from, :NEW.exchange_type, :NEW.exchange_cost, current_timestamp);
-             insert into wallet_history values (WALLETHISTORY_ID.NEXTVAL, :NEW.user_to, :NEW.exchange_type, :NEW.exchange_cost, current_timestamp);
     end if;
     if :NEW.exchange_type=2 and :NEW.exchange_cost < v_tongtien then
              update wallet set tongtien = tongtien - :NEW.exchange_cost where user_id = :NEW.user_from;
-             insert into wallet_history values (WALLETHISTORY_ID.NEXTVAL, :NEW.user_from, :NEW.exchange_type, :NEW.exchange_cost, current_timestamp);
     end if;
 end;
 /
