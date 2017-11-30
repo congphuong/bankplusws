@@ -8,7 +8,6 @@ import java.sql.Connection;
 public class Test {
     public static void main(String[] args) {
         ObjectPool pool = MyPool.getInstance();
-
         try {
             Connection connection = (Connection) pool.borrowObject();
             System.out.println(connection);
