@@ -59,7 +59,7 @@ public class CustomerDAO {
         return user;
     }
 
-    public ArrayList lichSuGiaoDich(int idCustomer){
+    public ArrayList<WalletHistory> lichSuGiaoDich(int idCustomer){
         WalletHistory wl = null;
         ArrayList<WalletHistory>list=new ArrayList<>();
         Connection connection = null;
@@ -72,7 +72,7 @@ public class CustomerDAO {
         }
         PreparedStatement ps = null;
         try {
-            ps = connection.prepareStatement("Select * from Wallet_History where user_id=?");
+            ps = connection.prepareStatement("Select * from v_history where user_id=?");
             ps.setInt(1, idCustomer);
 
             ResultSet rs = ps.executeQuery();
@@ -83,7 +83,7 @@ public class CustomerDAO {
                 wl.setChangeType(rs.getInt(3));
                 wl.setChangeCost(rs.getDouble(4));
                 wl.setChangeDate(rs.getTimestamp(5));
-
+                wl.setNameCustomer(rs.getString(6));
                 list.add(wl);
             }
             rs.close();
@@ -116,6 +116,7 @@ public class CustomerDAO {
         Connection connection = null;
         ObjectPool pool = MyPool.getInstance();
         String result = "";
+        String sql ="SELECT SIGNIN(?,?,?,?,?,?,?) FROM DUAL;";
         try {
             connection = (Connection) pool.borrowObject();
         } catch (Exception e) {
@@ -123,7 +124,7 @@ public class CustomerDAO {
         }
         PreparedStatement ps = null;
         try {
-            ps = connection.prepareStatement("Select SIGNIN(?,?,?,?,?,?,?) FROM DUAL;");
+            ps = connection.prepareStatement(sql);
             ps.setString(1,customer.getUserName());
             ps.setString(2, customer.getPassword());
             ps.setString(3, customer.getIndentify());
@@ -132,7 +133,7 @@ public class CustomerDAO {
             ps.setString(6, customer.getGender());
             ps.setString(7, customer.getAddress());
 
-            ResultSet rs = ps.executeQuery();
+            ResultSet rs = ps.executeQuery(sql);
             while (rs.next()) {
                 result = rs.getString(1);
                 if(result=="done"){
@@ -169,6 +170,7 @@ public class CustomerDAO {
 
     public static void main(String[] args) {
         CustomerDAO customerDAO = new CustomerDAO();
-        System.out.println(customerDAO.lichSuGiaoDich(1));
-    }
+       System.out.println(customerDAO.signOut(new Customer("bb","cc","dd","ee","rr","male","uu")));
+  //  System.out.println(customerDAO.lichSuGiaoDich(1));
+        }
 }

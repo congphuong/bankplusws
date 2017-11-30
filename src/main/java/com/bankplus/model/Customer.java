@@ -17,6 +17,15 @@ public class Customer {
         this.gender = gender;
         this.address = address;
     }
+    public Customer(String userName, String password, String firstName, String lastName, String indentify, String gender, String address) {
+        this.userName = userName;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.indentify = indentify;
+        this.gender = gender;
+        this.address = address;
+    }
 
     public Customer() {
     }
