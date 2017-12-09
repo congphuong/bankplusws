@@ -11,11 +11,10 @@ public class ConnectionPool extends BasePoolableObjectFactory {
     private String user;
     private String password;
 
-    public ConnectionPool(String host, int port, String schema,
+    public ConnectionPool(String host, int port,
                                       String user, String password) {
         this.host = host;
         this.port = port;
-        this.schema = schema;
         this.user = user;
         this.password = password;
     }
@@ -23,8 +22,8 @@ public class ConnectionPool extends BasePoolableObjectFactory {
     @Override
     public Object makeObject() throws Exception {
         Class.forName("oracle.jdbc.driver.OracleDriver");
-        String url = "jdbc:oracle:thin:@" + host + ":" + port + ":"
-                + schema;
+        //String url = "jdbc:oracle:thin:@" + host + ":" + port;
+        String url = "jdbc:oracle:thin:@//localhost:1521/orclpdb1.localdomain";
         return DriverManager.getConnection(url, user, password);
     }
 }
