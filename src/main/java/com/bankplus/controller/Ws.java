@@ -1,4 +1,4 @@
-package com.bankplus.controll;
+package com.bankplus.controller;
 
 import com.bankplus.DAO.CustomerDAO;
 import com.bankplus.model.WalletHistory;
@@ -13,8 +13,8 @@ import java.util.ArrayList;
 public class Ws {
     CustomerDAO cd=new CustomerDAO();
     @RequestMapping(value = "/lichsu/{id}",method = RequestMethod.GET)
-    private ArrayList<WalletHistory> lichSu(@PathVariable int id){
-        return cd.lichSuGiaoDich(id);
+    public ArrayList<WalletHistory> lichSu(@PathVariable int id){
+        return cd.walletHistory(id);
     }
 
 }

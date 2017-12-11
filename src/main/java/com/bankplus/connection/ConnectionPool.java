@@ -22,8 +22,8 @@ public class ConnectionPool extends BasePoolableObjectFactory {
     @Override
     public Object makeObject() throws Exception {
         Class.forName("oracle.jdbc.driver.OracleDriver");
-        //String url = "jdbc:oracle:thin:@" + host + ":" + port;
-        String url = "jdbc:oracle:thin:@//localhost:1521/orclpdb1.localdomain";
+        String url = "jdbc:oracle:thin:@" + host + ":" + port + ":DB11G";
+//        String url = "jdbc:oracle:thin:@//localhost:1521/orclpdb1.localdomain";
         return DriverManager.getConnection(url, user, password);
     }
 }

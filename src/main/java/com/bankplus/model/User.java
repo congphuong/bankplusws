@@ -17,9 +17,6 @@ public class User {
 
     public User() {
     }
-
-    ;
-
     public User(String username, String password, String chucVu, int maChucVu) {
         this.username = username;
         this.password = password;
