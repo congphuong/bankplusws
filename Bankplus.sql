@@ -1,13 +1,23 @@
 --------------------------------------------------------
---  File created - Monday-December-11-2017   
+--  File created - Tuesday-December-12-2017   
 --------------------------------------------------------
+--------------------------------------------------------
+--  DDL for View V_DETAIL
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE VIEW "BANKPLUS"."V_DETAIL" ("USER_ID", "USERNAME", "NAME", "TONGTIEN") AS 
+  select c.user_id, c.USERNAME, concat(concat(ci.first_name, ' '), ci.last_name) name, w.TONGTIEN 
+    from CUSTOMER c inner join WALLET w on c.USER_ID = w.USER_ID
+                inner join CUSTOMERINFO ci on c.USER_ID = ci.USER_ID
+;
 --------------------------------------------------------
 --  DDL for View V_HISTORY
 --------------------------------------------------------
 
-  CREATE OR REPLACE FORCE VIEW "BANKPLUS"."V_HISTORY" ("WALLET_HISTORY_ID", "USER_ID", "CHANGE_TYPE", "CHANGE_COST", "CHANGE_DATE", "NAME_CUST") AS 
-  select wh."WALLET_HISTORY_ID",wh."USER_ID",wh."CHANGE_TYPE",wh."CHANGE_COST",wh."CHANGE_DATE", concat(concat(ci.first_name, ' '), ci.last_name) as name_cust
+  CREATE OR REPLACE FORCE VIEW "BANKPLUS"."V_HISTORY" ("ID", "WALLET_HISTORY_ID", "USER_ID", "CHANGE_TYPE", "CHANGE_COST", "CHANGE_DATE", "NAME_CUST") AS 
+  select ROWNUM ID, wh."WALLET_HISTORY_ID",wh."USER_ID",wh."CHANGE_TYPE",wh."CHANGE_COST",wh."CHANGE_DATE", concat(concat(ci.first_name, ' '), ci.last_name) as name_cust
     from wallet_history wh inner join customerinfo ci on wh.user_id = ci.user_id
+    order by wh.WALLET_HISTORY_ID desc
 ;
 --------------------------------------------------------
 --  DDL for Table CUSTOMER
@@ -133,12 +143,14 @@ Insert into BANKPLUS.CUSTOMER (USER_ID,USERNAME,PASSWD) values (2,'trile287','tr
 Insert into BANKPLUS.CUSTOMER (USER_ID,USERNAME,PASSWD) values (20,'congphuong123','$2a$10$DTWIcfaXsDOqOvvio7eOYuGLOvYNPf4GribBLP1VkWQtU/3kryUKK');
 Insert into BANKPLUS.CUSTOMER (USER_ID,USERNAME,PASSWD) values (23,'nguyenvana1111','$2a$10$4B3l7UV/QT4ocv6dOc0yMeKfb8Uw4/hhzCf.ANmFEI8onRliySnwm');
 Insert into BANKPLUS.CUSTOMER (USER_ID,USERNAME,PASSWD) values (3,'lehanhtri28','1123123');
+Insert into BANKPLUS.CUSTOMER (USER_ID,USERNAME,PASSWD) values (24,'admin','$2a$10$8OFU8FsFu5I2J5kQrDxlf.vmsBRoQmfyUMW160IiZzpokpqBX87Oa');
 REM INSERTING into BANKPLUS.CUSTOMERINFO
 SET DEFINE OFF;
 Insert into BANKPLUS.CUSTOMERINFO (USER_ID,CMT,FIRST_NAME,LAST_NAME,GENDER,ADDRESS) values (1,'212714166  ','Tri','Le','Name','Quang Ngai');
-Insert into BANKPLUS.CUSTOMERINFO (USER_ID,CMT,FIRST_NAME,LAST_NAME,GENDER,ADDRESS) values (2,'212121221  ','tri','le','nam','HCM');
+Insert into BANKPLUS.CUSTOMERINFO (USER_ID,CMT,FIRST_NAME,LAST_NAME,GENDER,ADDRESS) values (2,'asdasd     ','asdasda ','asdasd','nam','HCM');
 Insert into BANKPLUS.CUSTOMERINFO (USER_ID,CMT,FIRST_NAME,LAST_NAME,GENDER,ADDRESS) values (20,'213123123  ','Phuong','Cong','Nam','Quang Nam');
-Insert into BANKPLUS.CUSTOMERINFO (USER_ID,CMT,FIRST_NAME,LAST_NAME,GENDER,ADDRESS) values (23,null,'Nguyen','Van A','Nu','TPHCM');
+Insert into BANKPLUS.CUSTOMERINFO (USER_ID,CMT,FIRST_NAME,LAST_NAME,GENDER,ADDRESS) values (23,'213123123  ','Phuong','Cong Cong','Nam','Quang Nam');
+Insert into BANKPLUS.CUSTOMERINFO (USER_ID,CMT,FIRST_NAME,LAST_NAME,GENDER,ADDRESS) values (24,'123123131  ','ADMIN',null,null,null);
 REM INSERTING into BANKPLUS.EMPLOYEES
 SET DEFINE OFF;
 Insert into BANKPLUS.EMPLOYEES (EMPLOYEE_ID,STORE_ID,EMPLOYEE_NAME,GENDER,ADDRESS) values (1,1,'Mark ','Nam','America');
@@ -152,6 +164,7 @@ Insert into BANKPLUS.WALLET (USER_ID,TONGTIEN) values (1,2100000);
 Insert into BANKPLUS.WALLET (USER_ID,TONGTIEN) values (20,0);
 Insert into BANKPLUS.WALLET (USER_ID,TONGTIEN) values (23,0);
 Insert into BANKPLUS.WALLET (USER_ID,TONGTIEN) values (3,500000);
+Insert into BANKPLUS.WALLET (USER_ID,TONGTIEN) values (24,0);
 REM INSERTING into BANKPLUS.WALLET_EXCHANGE
 SET DEFINE OFF;
 Insert into BANKPLUS.WALLET_EXCHANGE (WALLET_EXCHANGE_ID,USER_FROM,USER_TO,EMPLOYEE_ID,EXCHANGE_TYPE,EXCHANGE_COST,EXCHANGE_NOTE,EXCHANGE_DATE) values (2,1,null,null,2,2400000,'ahyhy',null);
@@ -165,7 +178,6 @@ Insert into BANKPLUS.WALLET_EXCHANGE (WALLET_EXCHANGE_ID,USER_FROM,USER_TO,EMPLO
 REM INSERTING into BANKPLUS.WALLET_HISTORY
 SET DEFINE OFF;
 Insert into BANKPLUS.WALLET_HISTORY (WALLET_HISTORY_ID,USER_ID,CHANGE_TYPE,CHANGE_COST,CHANGE_DATE) values (26,1,2,20000,to_date('22-NOV-17','DD-MON-RR'));
-Insert into BANKPLUS.WALLET_HISTORY (WALLET_HISTORY_ID,USER_ID,CHANGE_TYPE,CHANGE_COST,CHANGE_DATE) values (1,1,1,200000,null);
 Insert into BANKPLUS.WALLET_HISTORY (WALLET_HISTORY_ID,USER_ID,CHANGE_TYPE,CHANGE_COST,CHANGE_DATE) values (80,1,1,200000,to_date('11-DEC-17','DD-MON-RR'));
 Insert into BANKPLUS.WALLET_HISTORY (WALLET_HISTORY_ID,USER_ID,CHANGE_TYPE,CHANGE_COST,CHANGE_DATE) values (81,1,2,200000,to_date('11-DEC-17','DD-MON-RR'));
 Insert into BANKPLUS.WALLET_HISTORY (WALLET_HISTORY_ID,USER_ID,CHANGE_TYPE,CHANGE_COST,CHANGE_DATE) values (82,1,1,500000,to_date('11-DEC-17','DD-MON-RR'));
@@ -380,6 +392,23 @@ WHERE rn <= 1;
 
 /
 ALTER TRIGGER "BANKPLUS"."T_WALLET" ENABLE;
+--------------------------------------------------------
+--  DDL for Function CHANGEINFO
+--------------------------------------------------------
+
+  CREATE OR REPLACE FUNCTION "BANKPLUS"."CHANGEINFO" (idCustomer number, identify CUSTOMERINFO.CMT%TYPE, firstName CUSTOMERINFO.FIRST_NAME%TYPE, lastName CUSTOMERINFO.LAST_NAME%TYPE, gender1 CUSTOMERINFO.GENDER%TYPE, address1 CUSTOMERINFO.ADDRESS%TYPE)
+return number as result number;
+begin 
+    result := 0;
+    select user_id into result from CUSTOMER c where c.user_id = idCustomer;
+    if result = 0 then return 0;
+    else 
+        update CUSTOMERINFO set cmt = identify, first_Name = firstname, last_Name = lastname, gender = gender1, address = address1 where user_id = idCustomer;
+        return 1;
+    end if;
+end;
+
+/
 --------------------------------------------------------
 --  DDL for Function EXCHANGE
 --------------------------------------------------------

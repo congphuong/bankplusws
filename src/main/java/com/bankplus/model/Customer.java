@@ -5,24 +5,24 @@ public class Customer {
     private String userName;
     private String password;
     private String firstName, lastName;
-    private String indentify, gender, address;
+    private String identify, gender, address;
 
-    public Customer(int idCustomer, String userName, String password, String firstName, String lastName, String indentify, String gender, String address) {
+    public Customer(int idCustomer, String userName, String password, String firstName, String lastName, String identify, String gender, String address) {
         this.idCustomer = idCustomer;
         this.userName = userName;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.indentify = indentify;
+        this.identify = identify;
         this.gender = gender;
         this.address = address;
     }
-    public Customer(String userName, String password, String firstName, String lastName, String indentify, String gender, String address) {
+    public Customer(String userName, String password, String firstName, String lastName, String identify, String gender, String address) {
         this.userName = userName;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.indentify = indentify;
+        this.identify = identify;
         this.gender = gender;
         this.address = address;
     }
@@ -70,12 +70,12 @@ public class Customer {
         this.lastName = lastName;
     }
 
-    public String getIndentify() {
-        return indentify;
+    public String getIdentify() {
+        return identify;
     }
 
-    public void setIndentify(String indentify) {
-        this.indentify = indentify;
+    public void setIdentify(String identify) {
+        this.identify = identify;
     }
 
     public String getGender() {
@@ -102,7 +102,7 @@ public class Customer {
                 ", password='" + password + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", indentify='" + indentify + '\'' +
+                ", identify='" + identify + '\'' +
                 ", gender='" + gender + '\'' +
                 ", address='" + address + '\'' +
                 '}';
