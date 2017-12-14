@@ -132,7 +132,7 @@ public class CustomerDAO {
         String sql = "select * from V_HISTORY where V_HISTORY.USER_ID = ? and WALLET_HISTORY_ID < ? AND ROWNUM <= ?";
         int maxid = maxID(idCustomer);
         int minid = minID(idCustomer);
-        if (offset > maxid || offset <=0) {
+        if (offset > maxid || offset <= 0) {
             offset = maxid + 1;
         } else if (offset <= minid) {
             offset = minid;
@@ -152,12 +152,12 @@ public class CustomerDAO {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 walletHistory = new WalletHistory();
-                walletHistory.setWalletHistoryID(rs.getInt(2));
-                walletHistory.setIdCustomer(rs.getInt(3));
-                walletHistory.setChangeType(rs.getInt(4));
-                walletHistory.setChangeCost(rs.getDouble(5));
-                walletHistory.setChangeDate(rs.getTimestamp(6));
-                walletHistory.setNameCustomer(rs.getString(7));
+                walletHistory.setWalletHistoryID(rs.getInt(1));
+                walletHistory.setIdCustomer(rs.getInt(2));
+                walletHistory.setChangeType(rs.getInt(3));
+                walletHistory.setChangeCost(rs.getDouble(4));
+                walletHistory.setChangeDate(rs.getTimestamp(5));
+                walletHistory.setNameCustomer(rs.getString(6));
                 list.add(walletHistory);
             }
             rs.close();
@@ -298,19 +298,19 @@ public class CustomerDAO {
         return false;
     }
 
-    public CustomerDetail getCustDetail(String username) {
+    public CustomerDetail getCustDetail(int id) {
         CustomerDetail customerDetail = null;
         Connection connection = null;
         ObjectPool pool = MyPool.getInstance();
         PreparedStatement ps = null;
         ResultSet rs;
-        String sql = "select * from v_detail where username = ?";
+        String sql = "select * from v_detail where user_id = ?";
 
         try {
             customerDetail = new CustomerDetail();
             connection = (Connection) pool.borrowObject();
             ps = connection.prepareStatement(sql);
-            ps.setString(1, username);
+            ps.setInt(1, id);
 
             rs = ps.executeQuery();
             while (rs.next()) {
@@ -339,4 +339,5 @@ public class CustomerDAO {
         }
         return customerDetail;
     }
+
 }

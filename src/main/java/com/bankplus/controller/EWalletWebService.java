@@ -2,12 +2,14 @@ package com.bankplus.controller;
 
 import com.bankplus.DAO.CustomerDAO;
 import com.bankplus.DAO.WalletDAO;
-import com.bankplus.model.Customer;
-import com.bankplus.model.CustomerDetail;
-import com.bankplus.model.Exchange;
-import com.bankplus.model.WalletHistory;
+import com.bankplus.model.*;
+import com.bankplus.security.JwtGetUserDetail;
+import io.jsonwebtoken.impl.crypto.MacProvider;
+import jdk.nashorn.internal.parser.JSONParser;
+import org.json.simple.JSONObject;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Key;
 import java.util.ArrayList;
 
 @RestController
@@ -28,20 +30,21 @@ public class EWalletWebService {
         }
     }
 
-    @RequestMapping(value = "/customer/history/{id}/{numpages}/{offset}", method = RequestMethod.GET)
-    public ArrayList<WalletHistory> walletHistories(@PathVariable int id, @PathVariable int numpages, @PathVariable int offset) {
-        return customerDAO.walletHistory(id, numpages, offset);
+    @RequestMapping(value = "/customer/history/{numpages}/{offset}", method = RequestMethod.GET)
+    public ArrayList<WalletHistory> walletHistories(@PathVariable int numpages, @PathVariable int offset) {
+        return customerDAO.walletHistory(JwtGetUserDetail.getCurrentUserDetail().getId(), numpages, offset);
+
     }
 
-    @RequestMapping(value = "/customer/{username}", method = RequestMethod.GET)
-    public CustomerDetail getCustDetail(@PathVariable String username){
-        return customerDAO.getCustDetail(username);
+    @RequestMapping(value = "/customer/detail", method = RequestMethod.GET)
+    public CustomerDetail getCustDetail() {
+        return customerDAO.getCustDetail(JwtGetUserDetail.getCurrentUserDetail().getId());
     }
 
     @RequestMapping(value = "/customer/changeInfo", method = RequestMethod.PUT)
-    public MessageResult changeInfo(@RequestBody Customer customer){
+    public MessageResult changeInfo(@RequestBody Customer customer) {
         boolean tmp = customerDAO.changeInfo(customer);
-        if (tmp){
+        if (tmp) {
             return new MessageResult(true, "Change information succeed!");
         } else {
             return new MessageResult(false, "Change information failed!");
@@ -50,22 +53,56 @@ public class EWalletWebService {
 
     @RequestMapping(value = "/customer/exchange", method = RequestMethod.POST)
     public MessageResult exchange(@RequestBody Exchange exchange) {
-        boolean tmp = walletDAO.exchange(exchange);
-        if (tmp) {
-            return new MessageResult(true, "Exchange Success!");
-        } else {
-            return new MessageResult(false, "Exchange Failed!");
+//        exchange.se
+        if (exchange.getExchangeType() == 3 && exchange.getUserFrom() == JwtGetUserDetail.getCurrentUserDetail().getId()) {
+            boolean tmp = walletDAO.exchange(exchange);
+            if (tmp) {
+                return new MessageResult(true, "Exchange Success!");
+            } else {
+                return new MessageResult(false, "Exchange Failed!");
+            }
         }
+        return new MessageResult(false, "Exchange Failed!");
     }
 
     @RequestMapping(value = "/customer/transfer", method = RequestMethod.POST)
     public MessageResult transfer(@RequestBody Exchange exchange) {
-        boolean tmp = walletDAO.transfer(exchange);
-        if (tmp) {
-            return new MessageResult(true, "Transfer Success!");
-        } else {
-            return new MessageResult(false, "Transfer Failed!");
+        if (exchange.getExchangeType() == 3 && exchange.getUserFrom() == JwtGetUserDetail.getCurrentUserDetail().getId()) {
+            boolean tmp = walletDAO.transfer(exchange);
+            if (tmp) {
+                return new MessageResult(true, "Transfer Success!");
+            } else {
+                return new MessageResult(false, "Transfer Failed!");
+            }
         }
+        return new MessageResult(false, "Exchange Failed!");
     }
 
+    @RequestMapping(value = "customer/encodeQRImage", method = RequestMethod.POST)
+    public RequestQR encodeQR(@RequestBody QRCode qrCode) throws Exception {
+        RequestQR requestQR = new RequestQR();
+        JSONObject object = new JSONObject();
+        if (qrCode.getUserTo() != 0 && qrCode.getExchangeMoney() != 0) {
+            object.put("userTo", qrCode.getUserTo());
+            object.put("exchangeMoney", qrCode.getExchangeMoney());
+            object.put("note", qrCode.getNote());
+            requestQR.setCode(walletDAO.encodeQR(object.toString()));
+            return requestQR;
+        }
+        return requestQR;
+    }
+
+    @RequestMapping(value = "customer/decodeQRImage/", method = RequestMethod.POST)
+    public JSONObject decodeQR(@RequestBody RequestQR code) throws Exception {
+        String result = walletDAO.decodeQR(code.getCode());
+        JSONObject jsonObject = new JSONObject();
+        try {
+            org.json.simple.parser.JSONParser parser = new org.json.simple.parser.JSONParser();
+            jsonObject = (JSONObject) parser.parse(result);
+            return jsonObject;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return jsonObject;
+    }
 }

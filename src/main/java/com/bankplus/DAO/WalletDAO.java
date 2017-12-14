@@ -1,13 +1,20 @@
 package com.bankplus.DAO;
 
 import com.bankplus.connection.MyPool;
+import com.bankplus.model.Customer;
 import com.bankplus.model.Exchange;
-import com.bankplus.model.User;
+import com.bankplus.model.RequestQR;
+import io.jsonwebtoken.impl.crypto.MacProvider;
 import org.apache.commons.pool.ObjectPool;
+import org.json.simple.JSONObject;
+import org.omg.CORBA.Request;
 
+import java.security.Key;
 import java.sql.*;
 
 public class WalletDAO {
+    AESEncryptor AESEncryptor = new AESEncryptor();
+
     public boolean exchange(Exchange exchange) {
         String sql = "{? = call exchange(?, ?, ?, ?, ?)}";
         Connection connection = null;
@@ -86,9 +93,34 @@ public class WalletDAO {
         }
     }
 
-    public static void main(String[] args) {
+
+    public static void main(String[] args) throws Exception {
         WalletDAO walletDAO = new WalletDAO();
 //        System.out.println(walletDAO.exchange(1, 1, 200000.0, 2, "Nop tien"));
 //        System.out.println(walletDAO.transfer(1, 3, 500000, 3, "Chuyen khoan"));
+        Customer customer = new Customer(23, "congphuong123", "congphuong123", "Phuong", "Cong Cong", "213123123", "Nam", "Quang Nam");
+
+        Key key = MacProvider.generateKey();
+
+
+        JSONObject json = new JSONObject();
+        json.put("Ten", "Tri le");
+        json.put("Lop", "DH14DTB");
+        json.put("Truong", "DHNL");
+
+        String code = walletDAO.encodeQR(json.toString());
+        System.out.println(code);
+        System.out.println(walletDAO.decodeQR(code));
+    }
+
+    public String encodeQR(String jsonObject) throws Exception {
+        String encrypto = AESEncryptor.encrypt(jsonObject);
+
+        return encrypto;
+    }
+
+    public String decodeQR(String code) throws Exception {
+        String decode = AESEncryptor.decrypt(code);
+        return decode;
     }
 }
