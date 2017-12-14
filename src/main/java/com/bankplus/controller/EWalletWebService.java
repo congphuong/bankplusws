@@ -33,7 +33,7 @@ public class EWalletWebService {
         return customerDAO.walletHistory(id, numpages, offset);
     }
 
-    @RequestMapping(value = "/customer/{username}", method = RequestMethod.POST)
+    @RequestMapping(value = "/customer/{username}", method = RequestMethod.GET)
     public CustomerDetail getCustDetail(@PathVariable String username){
         return customerDAO.getCustDetail(username);
     }

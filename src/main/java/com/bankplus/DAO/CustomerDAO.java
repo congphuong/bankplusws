@@ -59,8 +59,8 @@ public class CustomerDAO {
         return user;
     }
 
-    public int size(int idCustomer) {
-        String sql = "select count(ROWNUM) from v_history where v_history.USER_ID = " + idCustomer;
+    public int maxID(int idCustomer) {
+        String sql = "select max(WALLET_HISTORY_ID) from v_history where v_history.USER_ID = " + idCustomer;
         int result = 0;
         Connection connection = null;
         PreparedStatement ps = null;
@@ -77,6 +77,51 @@ public class CustomerDAO {
             }
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            try {
+                if (ps != null)
+                    ps.close();
+                if (connection != null)
+                    pool.returnObject(connection);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return result;
+    }
+
+    public int minID(int idCustomer) {
+        String sql = "select min(WALLET_HISTORY_ID) from v_history where v_history.USER_ID = " + idCustomer;
+        int result = 0;
+        Connection connection = null;
+        PreparedStatement ps = null;
+        ObjectPool pool = MyPool.getInstance();
+
+        try {
+            connection = (Connection) pool.borrowObject();
+            ps = connection.prepareStatement(sql);
+//            ps.setInt(1, idCustomer);
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                result = rs.getInt(1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (ps != null)
+                    ps.close();
+                if (connection != null)
+                    pool.returnObject(connection);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         return result;
@@ -84,12 +129,13 @@ public class CustomerDAO {
 
     public ArrayList<WalletHistory> walletHistory(int idCustomer, int numpages, int offset) {
         WalletHistory walletHistory;
-        String sql = "select * from V_HISTORY where V_HISTORY.USER_ID = ? and (ID >= ? AND ID < ?)";
-
-        if (offset > size(idCustomer)) {
-            offset = size(idCustomer);
-        } else if (offset < 0) {
-            offset = 1;
+        String sql = "select * from V_HISTORY where V_HISTORY.USER_ID = ? and WALLET_HISTORY_ID < ? AND ROWNUM <= ?";
+        int maxid = maxID(idCustomer);
+        int minid = minID(idCustomer);
+        if (offset > maxid || offset <=0) {
+            offset = maxid + 1;
+        } else if (offset <= minid) {
+            offset = minid;
         }
         ArrayList<WalletHistory> list = new ArrayList<>();
         Connection connection = null;
@@ -100,8 +146,8 @@ public class CustomerDAO {
 
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setInt(1, idCustomer);
-            ps.setInt(2, 5 * offset + 1);
-            ps.setInt(3, 5 * offset + 1 + numpages);
+            ps.setInt(2, offset);
+            ps.setInt(3, numpages);
 
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
