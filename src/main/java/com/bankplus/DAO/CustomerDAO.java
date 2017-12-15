@@ -129,6 +129,7 @@ public class CustomerDAO {
 
     public ArrayList<WalletHistory> walletHistory(int idCustomer, int numpages, int offset) {
         WalletHistory walletHistory;
+        ArrayList<WalletHistory> list = new ArrayList<>();
         String sql = "select * from V_HISTORY where V_HISTORY.USER_ID = ? and WALLET_HISTORY_ID < ? AND ROWNUM <= ?";
         int maxid = maxID(idCustomer);
         int minid = minID(idCustomer);
@@ -136,8 +137,10 @@ public class CustomerDAO {
             offset = maxid + 1;
         } else if (offset <= minid) {
             offset = minid;
+        } else if (offset == maxid) {
+            return list;
         }
-        ArrayList<WalletHistory> list = new ArrayList<>();
+
         Connection connection = null;
         ObjectPool pool = MyPool.getInstance();
 

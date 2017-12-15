@@ -1,141 +1,141 @@
 --------------------------------------------------------
---  File created - Tuesday-December-12-2017   
+--  File created - Tuesday-December-12-2017
 --------------------------------------------------------
 --------------------------------------------------------
 --  DDL for View V_DETAIL
 --------------------------------------------------------
 
-  CREATE OR REPLACE FORCE VIEW "BANKPLUS"."V_DETAIL" ("USER_ID", "USERNAME", "NAME", "TONGTIEN") AS 
-  select c.user_id, c.USERNAME, concat(concat(ci.first_name, ' '), ci.last_name) name, w.TONGTIEN 
-    from CUSTOMER c inner join WALLET w on c.USER_ID = w.USER_ID
-                inner join CUSTOMERINFO ci on c.USER_ID = ci.USER_ID
+CREATE OR REPLACE FORCE VIEW "BANKPLUS"."V_DETAIL" ("USER_ID", "USERNAME", "NAME", "TONGTIEN") AS
+  select c.user_id, c.USERNAME, concat(concat(ci.first_name, ' '), ci.last_name) name, w.TONGTIEN
+  from CUSTOMER c inner join WALLET w on c.USER_ID = w.USER_ID
+    inner join CUSTOMERINFO ci on c.USER_ID = ci.USER_ID
 ;
 --------------------------------------------------------
 --  DDL for View V_HISTORY
 --------------------------------------------------------
 
-  CREATE OR REPLACE FORCE VIEW "BANKPLUS"."V_HISTORY" ("ID", "WALLET_HISTORY_ID", "USER_ID", "CHANGE_TYPE", "CHANGE_COST", "CHANGE_DATE", "NAME_CUST") AS 
-  select ROWNUM ID, wh."WALLET_HISTORY_ID",wh."USER_ID",wh."CHANGE_TYPE",wh."CHANGE_COST",wh."CHANGE_DATE", concat(concat(ci.first_name, ' '), ci.last_name) as name_cust
-    from wallet_history wh inner join customerinfo ci on wh.user_id = ci.user_id
-    order by wh.WALLET_HISTORY_ID desc
+CREATE OR REPLACE FORCE VIEW "BANKPLUS"."V_HISTORY" ("WALLET_HISTORY_ID", "USER_ID", "CHANGE_TYPE", "CHANGE_COST", "CHANGE_DATE", "NAME_CUST") AS
+  select wh."WALLET_HISTORY_ID",wh."USER_ID",wh."CHANGE_TYPE",wh."CHANGE_COST",wh."CHANGE_DATE", concat(concat(ci.first_name, ' '), ci.last_name) as name_cust
+  from wallet_history wh inner join customerinfo ci on wh.user_id = ci.user_id
+  order by wh.WALLET_HISTORY_ID desc
 ;
 --------------------------------------------------------
 --  DDL for Table CUSTOMER
 --------------------------------------------------------
 
-  CREATE TABLE "BANKPLUS"."CUSTOMER" 
-   (	"USER_ID" NUMBER, 
-	"USERNAME" VARCHAR2(100 BYTE), 
-	"PASSWD" VARCHAR2(100 BYTE)
-   ) SEGMENT CREATION IMMEDIATE 
-  PCTFREE 10 PCTUSED 40 INITRANS 1 MAXTRANS 255 NOCOMPRESS LOGGING
-  STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
-  PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1 BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
-  TABLESPACE "USERS" ;
+CREATE TABLE "BANKPLUS"."CUSTOMER"
+(	"USER_ID" NUMBER,
+   "USERNAME" VARCHAR2(100 BYTE),
+   "PASSWD" VARCHAR2(100 BYTE)
+) SEGMENT CREATION IMMEDIATE
+PCTFREE 10 PCTUSED 40 INITRANS 1 MAXTRANS 255 NOCOMPRESS LOGGING
+STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
+PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1 BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
+TABLESPACE "USERS" ;
 --------------------------------------------------------
 --  DDL for Table CUSTOMERINFO
 --------------------------------------------------------
 
-  CREATE TABLE "BANKPLUS"."CUSTOMERINFO" 
-   (	"USER_ID" NUMBER, 
-	"CMT" CHAR(11 BYTE), 
-	"FIRST_NAME" VARCHAR2(20 BYTE), 
-	"LAST_NAME" VARCHAR2(100 BYTE), 
-	"GENDER" VARCHAR2(5 BYTE), 
-	"ADDRESS" VARCHAR2(200 BYTE)
-   ) SEGMENT CREATION IMMEDIATE 
-  PCTFREE 10 PCTUSED 40 INITRANS 1 MAXTRANS 255 NOCOMPRESS LOGGING
-  STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
-  PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1 BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
-  TABLESPACE "USERS" ;
+CREATE TABLE "BANKPLUS"."CUSTOMERINFO"
+(	"USER_ID" NUMBER,
+   "CMT" CHAR(11 BYTE),
+   "FIRST_NAME" VARCHAR2(20 BYTE),
+   "LAST_NAME" VARCHAR2(100 BYTE),
+   "GENDER" VARCHAR2(5 BYTE),
+   "ADDRESS" VARCHAR2(200 BYTE)
+) SEGMENT CREATION IMMEDIATE
+PCTFREE 10 PCTUSED 40 INITRANS 1 MAXTRANS 255 NOCOMPRESS LOGGING
+STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
+PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1 BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
+TABLESPACE "USERS" ;
 --------------------------------------------------------
 --  DDL for Table EMPLOYEES
 --------------------------------------------------------
 
-  CREATE TABLE "BANKPLUS"."EMPLOYEES" 
-   (	"EMPLOYEE_ID" NUMBER, 
-	"STORE_ID" NUMBER, 
-	"EMPLOYEE_NAME" VARCHAR2(200 BYTE), 
-	"GENDER" VARCHAR2(5 BYTE), 
-	"ADDRESS" VARCHAR2(200 BYTE)
-   ) SEGMENT CREATION IMMEDIATE 
-  PCTFREE 10 PCTUSED 40 INITRANS 1 MAXTRANS 255 NOCOMPRESS LOGGING
-  STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
-  PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1 BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
-  TABLESPACE "USERS" ;
+CREATE TABLE "BANKPLUS"."EMPLOYEES"
+(	"EMPLOYEE_ID" NUMBER,
+   "STORE_ID" NUMBER,
+   "EMPLOYEE_NAME" VARCHAR2(200 BYTE),
+   "GENDER" VARCHAR2(5 BYTE),
+   "ADDRESS" VARCHAR2(200 BYTE)
+) SEGMENT CREATION IMMEDIATE
+PCTFREE 10 PCTUSED 40 INITRANS 1 MAXTRANS 255 NOCOMPRESS LOGGING
+STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
+PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1 BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
+TABLESPACE "USERS" ;
 --------------------------------------------------------
 --  DDL for Table STORE
 --------------------------------------------------------
 
-  CREATE TABLE "BANKPLUS"."STORE" 
-   (	"STORE_ID" NUMBER, 
-	"STORE_NAME" VARCHAR2(100 BYTE), 
-	"STORE_ADDRESS" VARCHAR2(200 BYTE)
-   ) SEGMENT CREATION IMMEDIATE 
-  PCTFREE 10 PCTUSED 40 INITRANS 1 MAXTRANS 255 NOCOMPRESS LOGGING
-  STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
-  PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1 BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
-  TABLESPACE "USERS" ;
+CREATE TABLE "BANKPLUS"."STORE"
+(	"STORE_ID" NUMBER,
+   "STORE_NAME" VARCHAR2(100 BYTE),
+   "STORE_ADDRESS" VARCHAR2(200 BYTE)
+) SEGMENT CREATION IMMEDIATE
+PCTFREE 10 PCTUSED 40 INITRANS 1 MAXTRANS 255 NOCOMPRESS LOGGING
+STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
+PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1 BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
+TABLESPACE "USERS" ;
 --------------------------------------------------------
 --  DDL for Table WALLET
 --------------------------------------------------------
 
-  CREATE TABLE "BANKPLUS"."WALLET" 
-   (	"USER_ID" NUMBER, 
-	"TONGTIEN" NUMBER(*,0)
-   ) SEGMENT CREATION IMMEDIATE 
-  PCTFREE 10 PCTUSED 40 INITRANS 1 MAXTRANS 255 NOCOMPRESS LOGGING
-  STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
-  PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1 BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
-  TABLESPACE "USERS" ;
+CREATE TABLE "BANKPLUS"."WALLET"
+(	"USER_ID" NUMBER,
+   "TONGTIEN" NUMBER(*,0)
+) SEGMENT CREATION IMMEDIATE
+PCTFREE 10 PCTUSED 40 INITRANS 1 MAXTRANS 255 NOCOMPRESS LOGGING
+STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
+PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1 BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
+TABLESPACE "USERS" ;
 --------------------------------------------------------
 --  DDL for Table WALLET_EXCHANGE
 --------------------------------------------------------
 
-  CREATE TABLE "BANKPLUS"."WALLET_EXCHANGE" 
-   (	"WALLET_EXCHANGE_ID" NUMBER, 
-	"USER_FROM" NUMBER, 
-	"USER_TO" NUMBER, 
-	"EMPLOYEE_ID" VARCHAR2(10 BYTE), 
-	"EXCHANGE_TYPE" NUMBER, 
-	"EXCHANGE_COST" NUMBER(*,0), 
-	"EXCHANGE_NOTE" VARCHAR2(2000 BYTE), 
-	"EXCHANGE_DATE" DATE
-   ) SEGMENT CREATION IMMEDIATE 
-  PCTFREE 10 PCTUSED 40 INITRANS 1 MAXTRANS 255 NOCOMPRESS LOGGING
-  STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
-  PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1 BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
-  TABLESPACE "USERS" ;
+CREATE TABLE "BANKPLUS"."WALLET_EXCHANGE"
+(	"WALLET_EXCHANGE_ID" NUMBER,
+   "USER_FROM" NUMBER,
+   "USER_TO" NUMBER,
+   "EMPLOYEE_ID" VARCHAR2(10 BYTE),
+   "EXCHANGE_TYPE" NUMBER,
+   "EXCHANGE_COST" NUMBER(*,0),
+   "EXCHANGE_NOTE" VARCHAR2(2000 BYTE),
+   "EXCHANGE_DATE" DATE
+) SEGMENT CREATION IMMEDIATE
+PCTFREE 10 PCTUSED 40 INITRANS 1 MAXTRANS 255 NOCOMPRESS LOGGING
+STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
+PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1 BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
+TABLESPACE "USERS" ;
 --------------------------------------------------------
 --  DDL for Table WALLET_HISTORY
 --------------------------------------------------------
 
-  CREATE TABLE "BANKPLUS"."WALLET_HISTORY" 
-   (	"WALLET_HISTORY_ID" NUMBER, 
-	"USER_ID" NUMBER, 
-	"CHANGE_TYPE" NUMBER(*,0), 
-	"CHANGE_COST" NUMBER(*,0), 
-	"CHANGE_DATE" DATE
-   ) SEGMENT CREATION IMMEDIATE 
-  PCTFREE 10 PCTUSED 40 INITRANS 1 MAXTRANS 255 NOCOMPRESS LOGGING
-  STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
-  PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1 BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
-  TABLESPACE "USERS" ;
+CREATE TABLE "BANKPLUS"."WALLET_HISTORY"
+(	"WALLET_HISTORY_ID" NUMBER,
+   "USER_ID" NUMBER,
+   "CHANGE_TYPE" NUMBER(*,0),
+   "CHANGE_COST" NUMBER(*,0),
+   "CHANGE_DATE" DATE
+) SEGMENT CREATION IMMEDIATE
+PCTFREE 10 PCTUSED 40 INITRANS 1 MAXTRANS 255 NOCOMPRESS LOGGING
+STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
+PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1 BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
+TABLESPACE "USERS" ;
 --------------------------------------------------------
 --  DDL for Sequence CUSTOMER_ID
 --------------------------------------------------------
 
-   CREATE SEQUENCE  "BANKPLUS"."CUSTOMER_ID"  MINVALUE 0 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 40 CACHE 20 NOORDER  NOCYCLE ;
+CREATE SEQUENCE  "BANKPLUS"."CUSTOMER_ID"  MINVALUE 0 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 40 CACHE 20 NOORDER  NOCYCLE ;
 --------------------------------------------------------
 --  DDL for Sequence WALLETEXCHANGE_ID
 --------------------------------------------------------
 
-   CREATE SEQUENCE  "BANKPLUS"."WALLETEXCHANGE_ID"  MINVALUE 0 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 40 CACHE 20 NOORDER  NOCYCLE ;
+CREATE SEQUENCE  "BANKPLUS"."WALLETEXCHANGE_ID"  MINVALUE 0 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 40 CACHE 20 NOORDER  NOCYCLE ;
 --------------------------------------------------------
 --  DDL for Sequence WALLETHISTORY_ID
 --------------------------------------------------------
 
-   CREATE SEQUENCE  "BANKPLUS"."WALLETHISTORY_ID"  MINVALUE 0 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 100 CACHE 20 NOORDER  NOCYCLE ;
+CREATE SEQUENCE  "BANKPLUS"."WALLETHISTORY_ID"  MINVALUE 0 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 100 CACHE 20 NOORDER  NOCYCLE ;
 REM INSERTING into BANKPLUS.CUSTOMER
 SET DEFINE OFF;
 Insert into BANKPLUS.CUSTOMER (USER_ID,USERNAME,PASSWD) values (1,'trile28','$2a$10$p7g5HFjV0RGDDSxffYZneuC3uTkNsPkam5RdrECwej02iQ2jUYznq');
@@ -193,201 +193,132 @@ Insert into BANKPLUS.WALLET_HISTORY (WALLET_HISTORY_ID,USER_ID,CHANGE_TYPE,CHANG
 --  DDL for Index USER_UNIQUE
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "BANKPLUS"."USER_UNIQUE" ON "BANKPLUS"."CUSTOMER" ("USERNAME") 
-  PCTFREE 10 INITRANS 2 MAXTRANS 255 COMPUTE STATISTICS 
-  STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
-  PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1 BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
-  TABLESPACE "USERS" ;
+CREATE UNIQUE INDEX "BANKPLUS"."USER_UNIQUE" ON "BANKPLUS"."CUSTOMER" ("USERNAME")
+PCTFREE 10 INITRANS 2 MAXTRANS 255 COMPUTE STATISTICS
+STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
+PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1 BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
+TABLESPACE "USERS" ;
 --------------------------------------------------------
 --  DDL for Index CINFO
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "BANKPLUS"."CINFO" ON "BANKPLUS"."CUSTOMERINFO" ("USER_ID") 
-  PCTFREE 10 INITRANS 2 MAXTRANS 255 COMPUTE STATISTICS 
-  STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
-  PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1 BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
-  TABLESPACE "USERS" ;
+CREATE UNIQUE INDEX "BANKPLUS"."CINFO" ON "BANKPLUS"."CUSTOMERINFO" ("USER_ID")
+PCTFREE 10 INITRANS 2 MAXTRANS 255 COMPUTE STATISTICS
+STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
+PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1 BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
+TABLESPACE "USERS" ;
 --------------------------------------------------------
 --  DDL for Trigger T_HISTORY
 --------------------------------------------------------
 
-  CREATE OR REPLACE TRIGGER "BANKPLUS"."T_HISTORY" 
-after update 
-on wallet
-for each row
-begin 
+CREATE OR REPLACE TRIGGER "BANKPLUS"."T_HISTORY"
+  after update
+  on wallet
+  for each row
+  begin
     if :OLD.tongtien < :NEW.tongtien then
-        insert into wallet_history values (WALLETHISTORY_ID.NEXTVAL, :OLD.user_id, 2, :NEW.tongtien - :OLD.tongtien, current_timestamp);
+      insert into wallet_history values (WALLETHISTORY_ID.NEXTVAL, :OLD.user_id, 2, :NEW.tongtien - :OLD.tongtien, current_timestamp);
     end if;
     if :OLD.tongtien > :NEW.tongtien then
-        insert into wallet_history values (WALLETHISTORY_ID.NEXTVAL, :OLD.user_id, 1, :OLD.tongtien - :NEW.tongtien, current_timestamp);
+      insert into wallet_history values (WALLETHISTORY_ID.NEXTVAL, :OLD.user_id, 1, :OLD.tongtien - :NEW.tongtien, current_timestamp);
     end if;
-end;
+  end;
 /
 ALTER TRIGGER "BANKPLUS"."T_HISTORY" ENABLE;
 --------------------------------------------------------
 --  DDL for Trigger T_NEWWALLET
 --------------------------------------------------------
 
-  CREATE OR REPLACE TRIGGER "BANKPLUS"."T_NEWWALLET" 
-after insert
-on customer
-for each row
-begin
+CREATE OR REPLACE TRIGGER "BANKPLUS"."T_NEWWALLET"
+  after insert
+  on customer
+  for each row
+  begin
     insert into Wallet values (:NEW.user_id, 0);
-end;
+  end;
 /
 ALTER TRIGGER "BANKPLUS"."T_NEWWALLET" ENABLE;
 --------------------------------------------------------
 --  DDL for Trigger T_WALLET
 --------------------------------------------------------
 
-  CREATE OR REPLACE TRIGGER "BANKPLUS"."T_WALLET" 
-after insert 
-on wallet_exchange
-for each row
-declare v_tongtien DECIMAL;
-begin 
+CREATE OR REPLACE TRIGGER "BANKPLUS"."T_WALLET"
+  after insert
+  on wallet_exchange
+  for each row
+  declare v_tongtien DECIMAL;
+  begin
     select tongtien into v_tongtien from wallet where user_id = :NEW.user_from;
     if :NEW.exchange_type=1 then
-             update wallet set tongtien = tongtien + :NEW.exchange_cost where user_id = :NEW.user_from;
+      update wallet set tongtien = tongtien + :NEW.exchange_cost where user_id = :NEW.user_from;
     end if;
-    if :NEW.exchange_type=3 and :NEW.exchange_cost < v_tongtien then      
-             update wallet set tongtien = tongtien - :NEW.exchange_cost where user_id = :NEW.user_from;
-             update wallet set tongtien = tongtien + :NEW.exchange_cost where user_id = :NEW.user_to;
+    if :NEW.exchange_type=3 and :NEW.exchange_cost < v_tongtien then
+      update wallet set tongtien = tongtien - :NEW.exchange_cost where user_id = :NEW.user_from;
+      update wallet set tongtien = tongtien + :NEW.exchange_cost where user_id = :NEW.user_to;
     end if;
     if :NEW.exchange_type=2 and :NEW.exchange_cost < v_tongtien then
-             update wallet set tongtien = tongtien - :NEW.exchange_cost where user_id = :NEW.user_from;
+      update wallet set tongtien = tongtien - :NEW.exchange_cost where user_id = :NEW.user_from;
     end if;
-end;
+  end;
 
 create or replace trigger t_history
-after update 
-on wallet
-for each row
-begin 
+  after update
+  on wallet
+  for each row
+  begin
     if :OLD.tongtien < :NEW.tongtien then
-        insert into wallet_history values (WALLETHISTORY_ID.NEXTVAL, :OLD.user_id, 2, :NEW.tongtien - :OLD.tongtien, current_timestamp);
+      insert into wallet_history values (WALLETHISTORY_ID.NEXTVAL, :OLD.user_id, 2, :NEW.tongtien - :OLD.tongtien, current_timestamp);
     end if;
     if :OLD.tongtien > :NEW.tongtien then
-        insert into wallet_history values (WALLETHISTORY_ID.NEXTVAL, :OLD.user_id, 1, :OLD.tongtien - :NEW.tongtien, current_timestamp);
+      insert into wallet_history values (WALLETHISTORY_ID.NEXTVAL, :OLD.user_id, 1, :OLD.tongtien - :NEW.tongtien, current_timestamp);
     end if;
-end;
+  end;
 
 CREATE SEQUENCE customer_id MINVALUE 0 START WITH 0 INCREMENT BY 1 CACHE 20;
-
-create or replace function signIn(username IN varchar2, password varchar2, cmt char, firstname varchar2, lastname varchar2, gender varchar2, address varchar)
-return varchar2 is PRAGMA AUTONOMOUS_TRANSACTION;
-begin 
-    if username is not null then
-        insert into customer values (customer_id.NEXTVAL, username, password);
-        insert into CUSTOMERINFO values (getNewId(username), cmt, firstname, lastname, gender, address);
-        commit;
-        return 'done';
-    else 
-        return 'not done';
-    end if;    
-end;
-
-select signIn('', 'trile287', '212121221', 'tri', 'le', 'nam', 'HCM') from dual;
-
-create or replace function getNewId(user_name varchar2) 
-return number as id_res number;
-
-begin
-    select user_id into id_res from customer WHERE ROWNUM=1 and user_name= username
-    order by user_id desc ;
-    return id_res;
-end getNewId;
 
 
 CREATE SEQUENCE walletexchange_id MINVALUE 0 START WITH 5 INCREMENT BY 1 CACHE 20;
 
 create or replace function exchange(id_employee number, id_customer number, exchange_money number, exchange_type number, exchange_note nvarchar2)
-return number as result number;
-begin
-    insert into wallet_exchange(wallet_exchange_id, user_from, employee_id, EXCHANGE_COST, EXCHANGE_TYPE, EXCHANGE_NOTE, EXCHANGE_DATE) 
-                values (WALLETEXCHANGE_ID.NEXTVAL, id_customer, id_employee, exchange_money, exchange_type, exchange_note, current_timestamp);    
+  return number as result number;
+  begin
+    insert into wallet_exchange(wallet_exchange_id, user_from, employee_id, EXCHANGE_COST, EXCHANGE_TYPE, EXCHANGE_NOTE, EXCHANGE_DATE)
+    values (WALLETEXCHANGE_ID.NEXTVAL, id_customer, id_employee, exchange_money, exchange_type, exchange_note, current_timestamp);
     commit;
     return 1;
-end;
+  end;
 
-insert into wallet_exchange(wallet_exchange_id, user_from, employee_id, EXCHANGE_COST, EXCHANGE_TYPE, EXCHANGE_NOTE, EXCHANGE_DATE) 
-                values (WALLETEXCHANGE_ID.NEXTVAL, 1, 1, 200000, 1, 'hello', current_timestamp);
+insert into wallet_exchange(wallet_exchange_id, user_from, employee_id, EXCHANGE_COST, EXCHANGE_TYPE, EXCHANGE_NOTE, EXCHANGE_DATE)
+values (WALLETEXCHANGE_ID.NEXTVAL, 1, 1, 200000, 1, 'hello', current_timestamp);
 
-select exchange(1, 1, 200000, 2, 'Nop tien') from DUAL;
-
-execute exchange(1, 1, 200000, 2, 'Nop tien');
-DECLARE
-  l_success_code NUMBER;
-BEGIN
-  l_success_code := exchange(1, 1, 600000, 1, 'Nop tien');
-END;
-
-
-
-
-select getNewId('trile28') from dual;
 
 create view v_history as
-    select wh.*, concat(concat(ci.first_name, ' '), ci.last_name) as name_cust
-    from wallet_history wh inner join customerinfo ci on wh.user_id = ci.user_id;
-
-select * from v_history where user_id = 1;
+  select wh.*, concat(concat(ci.first_name, ' '), ci.last_name) as name_cust
+  from wallet_history wh inner join customerinfo ci on wh.user_id = ci.user_id;
 
 create or replace function transfer(id_from number, id_to number, transfer_money number, exchange_type number, exchange_note nvarchar2)
-return number as result number;
-begin
-    insert into wallet_exchange(wallet_exchange_id, user_from, user_to, EXCHANGE_COST, EXCHANGE_TYPE, EXCHANGE_NOTE, EXCHANGE_DATE) 
-                values (WALLETEXCHANGE_ID.NEXTVAL, id_from, id_to, transfer_money, exchange_type, exchange_note, current_timestamp);    
+  return number as result number;
+  begin
+    insert into wallet_exchange(wallet_exchange_id, user_from, user_to, EXCHANGE_COST, EXCHANGE_TYPE, EXCHANGE_NOTE, EXCHANGE_DATE)
+    values (WALLETEXCHANGE_ID.NEXTVAL, id_from, id_to, transfer_money, exchange_type, exchange_note, current_timestamp);
     commit;
     return 1;
-end;
+  end;
 
-create or replace trigger T_newWallet 
-after insert
-on customer
-for each row
-begin
+create or replace trigger T_newWallet
+  after insert
+  on customer
+  for each row
+  begin
     insert into Wallet values (:NEW.user_id, 0);
-end;
+  end;
 
 create or replace function login(user_name varchar2)
-return varchar2 as pass_word customer.passwd%type;
-begin
+  return varchar2 as pass_word customer.passwd%type;
+  begin
     select passwd into pass_word from customer where username = user_name;
     return pass_word;
-end;
-
-select * from V_HISTORY where V_HISTORY.USER_ID = 1 and ROWNUM <= 5 order by V_HISTORY.USER_ID desc;
-
-select * from V_HISTORY where V_HISTORY.USER_ID = 1 order by V_HISTORY.USER_ID OFFSET 5 ROWS FETCH NEXT 14 ROWS ONLY;
-
-SELECT outer.*
-  FROM (SELECT ROWNUM rn, inner.*
-          FROM (  SELECT e.*
-                    FROM V_HISTORY e
-                ORDER BY V_HISTORY.CHANGE_DATE) inner) as outer
- WHERE outer.rn >= 5 AND outer.rn <= 10;
-
-SELECT * 
-  FROM (SELECT *, rownum rn
-          FROM (SELECT *
-                  FROM V_HISTORY where V_HISTORY.USER_ID = 1 
-                 ORDER BY V_HISTORY.CHANGE_DATE)
-         WHERE rownum <= 5)
- WHERE rn >=0
-
-select distinct user_id from V_HISTORY limit 5;
-
-SELECT *
-  FROM (
-    SELECT V_HISTORY.*, rownum AS rn
-      FROM V_HISTORY
-    ORDER BY V_HISTORY.CHANGE_DATE DESC
-  )
-WHERE rn <= 1;
-
+  end;
 
 
 /
@@ -396,100 +327,100 @@ ALTER TRIGGER "BANKPLUS"."T_WALLET" ENABLE;
 --  DDL for Function CHANGEINFO
 --------------------------------------------------------
 
-  CREATE OR REPLACE FUNCTION "BANKPLUS"."CHANGEINFO" (idCustomer number, identify CUSTOMERINFO.CMT%TYPE, firstName CUSTOMERINFO.FIRST_NAME%TYPE, lastName CUSTOMERINFO.LAST_NAME%TYPE, gender1 CUSTOMERINFO.GENDER%TYPE, address1 CUSTOMERINFO.ADDRESS%TYPE)
-return number as result number;
-begin 
+CREATE OR REPLACE FUNCTION "BANKPLUS"."CHANGEINFO" (idCustomer number, identify CUSTOMERINFO.CMT%TYPE, firstName CUSTOMERINFO.FIRST_NAME%TYPE, lastName CUSTOMERINFO.LAST_NAME%TYPE, gender1 CUSTOMERINFO.GENDER%TYPE, address1 CUSTOMERINFO.ADDRESS%TYPE)
+  return number as result number;
+  begin
     result := 0;
     select user_id into result from CUSTOMER c where c.user_id = idCustomer;
     if result = 0 then return 0;
-    else 
-        update CUSTOMERINFO set cmt = identify, first_Name = firstname, last_Name = lastname, gender = gender1, address = address1 where user_id = idCustomer;
-        return 1;
+    else
+      update CUSTOMERINFO set cmt = identify, first_Name = firstname, last_Name = lastname, gender = gender1, address = address1 where user_id = idCustomer;
+      return 1;
     end if;
-end;
+  end;
 
 /
 --------------------------------------------------------
 --  DDL for Function EXCHANGE
 --------------------------------------------------------
 
-  CREATE OR REPLACE FUNCTION "BANKPLUS"."EXCHANGE" (id_employee number, id_customer number, exchange_money number, exchange_type number, exchange_note nvarchar2)
-return number as result number;
-begin
-    insert into wallet_exchange(wallet_exchange_id, user_from, employee_id, EXCHANGE_COST, EXCHANGE_TYPE, EXCHANGE_NOTE, EXCHANGE_DATE) 
-                values (WALLETEXCHANGE_ID.NEXTVAL, id_customer, id_employee, exchange_money, exchange_type, exchange_note, current_timestamp);    
+CREATE OR REPLACE FUNCTION "BANKPLUS"."EXCHANGE" (id_employee number, id_customer number, exchange_money number, exchange_type number, exchange_note nvarchar2)
+  return number as result number;
+  begin
+    insert into wallet_exchange(wallet_exchange_id, user_from, employee_id, EXCHANGE_COST, EXCHANGE_TYPE, EXCHANGE_NOTE, EXCHANGE_DATE)
+    values (WALLETEXCHANGE_ID.NEXTVAL, id_customer, id_employee, exchange_money, exchange_type, exchange_note, current_timestamp);
     commit;
     return 1;
-end;
+  end;
 
 /
 --------------------------------------------------------
 --  DDL for Function GETNEWID
 --------------------------------------------------------
 
-  CREATE OR REPLACE FUNCTION "BANKPLUS"."GETNEWID" (user_name varchar2) 
-return number as id_res number;
-begin
+CREATE OR REPLACE FUNCTION "BANKPLUS"."GETNEWID" (user_name varchar2)
+  return number as id_res number;
+  begin
     select user_id into id_res from customer WHERE ROWNUM=1 and user_name= username
     order by user_id desc ;
     return id_res;
-end getNewId;
+  end getNewId;
 
 /
 --------------------------------------------------------
 --  DDL for Function LOGIN
 --------------------------------------------------------
 
-  CREATE OR REPLACE FUNCTION "BANKPLUS"."LOGIN" (user_name varchar2)
-return varchar2 as pass_word customer.passwd%type;
-begin
+CREATE OR REPLACE FUNCTION "BANKPLUS"."LOGIN" (user_name varchar2)
+  return varchar2 as pass_word customer.passwd%type;
+  begin
     select passwd into pass_word from customer where username = user_name;
     return pass_word;
-end;
+  end;
 
 /
 --------------------------------------------------------
 --  DDL for Function REGISTER
 --------------------------------------------------------
 
-  CREATE OR REPLACE FUNCTION "BANKPLUS"."REGISTER" (username IN varchar2, password varchar2, cmt char, firstname varchar2, lastname varchar2, gender varchar2, address varchar)
-return varchar2 is PRAGMA AUTONOMOUS_TRANSACTION;
-begin 
+CREATE OR REPLACE FUNCTION "BANKPLUS"."REGISTER" (username IN varchar2, password varchar2, cmt char, firstname varchar2, lastname varchar2, gender varchar2, address varchar)
+  return varchar2 is PRAGMA AUTONOMOUS_TRANSACTION;
+  begin
     if username is not null then
-        insert into customer values (customer_id.NEXTVAL, username, password);
-        insert into CUSTOMERINFO values (getNewId(username), cmt, firstname, lastname, gender, address);
-        commit;
-        return 'done';
-    else 
-        return 'not done';
-    end if;    
-end;
+      insert into customer values (customer_id.NEXTVAL, username, password);
+      insert into CUSTOMERINFO values (getNewId(username), cmt, firstname, lastname, gender, address);
+      commit;
+      return 'done';
+    else
+      return 'not done';
+    end if;
+  end;
 
 /
 --------------------------------------------------------
 --  DDL for Function TRANSFER
 --------------------------------------------------------
 
-  CREATE OR REPLACE FUNCTION "BANKPLUS"."TRANSFER" (id_from number, id_to number, transfer_money number, exchange_type number, exchange_note nvarchar2)
-return number as result number;
-begin
-    insert into wallet_exchange(wallet_exchange_id, user_from, user_to, EXCHANGE_COST, EXCHANGE_TYPE, EXCHANGE_NOTE, EXCHANGE_DATE) 
-                values (WALLETEXCHANGE_ID.NEXTVAL, id_from, id_to, transfer_money, exchange_type, exchange_note, current_timestamp);    
+CREATE OR REPLACE FUNCTION "BANKPLUS"."TRANSFER" (id_from number, id_to number, transfer_money number, exchange_type number, exchange_note nvarchar2)
+  return number as result number;
+  begin
+    insert into wallet_exchange(wallet_exchange_id, user_from, user_to, EXCHANGE_COST, EXCHANGE_TYPE, EXCHANGE_NOTE, EXCHANGE_DATE)
+    values (WALLETEXCHANGE_ID.NEXTVAL, id_from, id_to, transfer_money, exchange_type, exchange_note, current_timestamp);
     commit;
     return 1;
-end;
+  end;
 
 /
 --------------------------------------------------------
 --  Constraints for Table WALLET_HISTORY
 --------------------------------------------------------
 
-  ALTER TABLE "BANKPLUS"."WALLET_HISTORY" MODIFY ("WALLET_HISTORY_ID" NOT NULL ENABLE);
- 
-  ALTER TABLE "BANKPLUS"."WALLET_HISTORY" MODIFY ("USER_ID" NOT NULL ENABLE);
- 
-  ALTER TABLE "BANKPLUS"."WALLET_HISTORY" ADD PRIMARY KEY ("WALLET_HISTORY_ID")
-  USING INDEX PCTFREE 10 INITRANS 2 MAXTRANS 255 COMPUTE STATISTICS 
+ALTER TABLE "BANKPLUS"."WALLET_HISTORY" MODIFY ("WALLET_HISTORY_ID" NOT NULL ENABLE);
+
+ALTER TABLE "BANKPLUS"."WALLET_HISTORY" MODIFY ("USER_ID" NOT NULL ENABLE);
+
+ALTER TABLE "BANKPLUS"."WALLET_HISTORY" ADD PRIMARY KEY ("WALLET_HISTORY_ID")
+  USING INDEX PCTFREE 10 INITRANS 2 MAXTRANS 255 COMPUTE STATISTICS
   STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
   PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1 BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
   TABLESPACE "USERS"  ENABLE;
@@ -497,10 +428,10 @@ end;
 --  Constraints for Table STORE
 --------------------------------------------------------
 
-  ALTER TABLE "BANKPLUS"."STORE" MODIFY ("STORE_ID" NOT NULL ENABLE);
- 
-  ALTER TABLE "BANKPLUS"."STORE" ADD PRIMARY KEY ("STORE_ID")
-  USING INDEX PCTFREE 10 INITRANS 2 MAXTRANS 255 COMPUTE STATISTICS 
+ALTER TABLE "BANKPLUS"."STORE" MODIFY ("STORE_ID" NOT NULL ENABLE);
+
+ALTER TABLE "BANKPLUS"."STORE" ADD PRIMARY KEY ("STORE_ID")
+  USING INDEX PCTFREE 10 INITRANS 2 MAXTRANS 255 COMPUTE STATISTICS
   STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
   PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1 BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
   TABLESPACE "USERS"  ENABLE;
@@ -508,20 +439,20 @@ end;
 --  Constraints for Table CUSTOMER
 --------------------------------------------------------
 
-  ALTER TABLE "BANKPLUS"."CUSTOMER" MODIFY ("USER_ID" NOT NULL ENABLE);
- 
-  ALTER TABLE "BANKPLUS"."CUSTOMER" MODIFY ("USERNAME" NOT NULL ENABLE);
- 
-  ALTER TABLE "BANKPLUS"."CUSTOMER" MODIFY ("PASSWD" NOT NULL ENABLE);
- 
-  ALTER TABLE "BANKPLUS"."CUSTOMER" ADD PRIMARY KEY ("USER_ID")
-  USING INDEX PCTFREE 10 INITRANS 2 MAXTRANS 255 COMPUTE STATISTICS 
+ALTER TABLE "BANKPLUS"."CUSTOMER" MODIFY ("USER_ID" NOT NULL ENABLE);
+
+ALTER TABLE "BANKPLUS"."CUSTOMER" MODIFY ("USERNAME" NOT NULL ENABLE);
+
+ALTER TABLE "BANKPLUS"."CUSTOMER" MODIFY ("PASSWD" NOT NULL ENABLE);
+
+ALTER TABLE "BANKPLUS"."CUSTOMER" ADD PRIMARY KEY ("USER_ID")
+  USING INDEX PCTFREE 10 INITRANS 2 MAXTRANS 255 COMPUTE STATISTICS
   STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
   PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1 BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
   TABLESPACE "USERS"  ENABLE;
- 
-  ALTER TABLE "BANKPLUS"."CUSTOMER" ADD CONSTRAINT "USER_UNIQUE" UNIQUE ("USERNAME")
-  USING INDEX PCTFREE 10 INITRANS 2 MAXTRANS 255 COMPUTE STATISTICS 
+
+ALTER TABLE "BANKPLUS"."CUSTOMER" ADD CONSTRAINT "USER_UNIQUE" UNIQUE ("USERNAME")
+  USING INDEX PCTFREE 10 INITRANS 2 MAXTRANS 255 COMPUTE STATISTICS
   STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
   PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1 BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
   TABLESPACE "USERS"  ENABLE;
@@ -529,12 +460,12 @@ end;
 --  Constraints for Table EMPLOYEES
 --------------------------------------------------------
 
-  ALTER TABLE "BANKPLUS"."EMPLOYEES" MODIFY ("EMPLOYEE_ID" NOT NULL ENABLE);
- 
-  ALTER TABLE "BANKPLUS"."EMPLOYEES" MODIFY ("STORE_ID" NOT NULL ENABLE);
- 
-  ALTER TABLE "BANKPLUS"."EMPLOYEES" ADD PRIMARY KEY ("EMPLOYEE_ID")
-  USING INDEX PCTFREE 10 INITRANS 2 MAXTRANS 255 COMPUTE STATISTICS 
+ALTER TABLE "BANKPLUS"."EMPLOYEES" MODIFY ("EMPLOYEE_ID" NOT NULL ENABLE);
+
+ALTER TABLE "BANKPLUS"."EMPLOYEES" MODIFY ("STORE_ID" NOT NULL ENABLE);
+
+ALTER TABLE "BANKPLUS"."EMPLOYEES" ADD PRIMARY KEY ("EMPLOYEE_ID")
+  USING INDEX PCTFREE 10 INITRANS 2 MAXTRANS 255 COMPUTE STATISTICS
   STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
   PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1 BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
   TABLESPACE "USERS"  ENABLE;
@@ -542,28 +473,28 @@ end;
 --  Constraints for Table WALLET
 --------------------------------------------------------
 
-  ALTER TABLE "BANKPLUS"."WALLET" MODIFY ("USER_ID" NOT NULL ENABLE);
+ALTER TABLE "BANKPLUS"."WALLET" MODIFY ("USER_ID" NOT NULL ENABLE);
 --------------------------------------------------------
 --  Constraints for Table CUSTOMERINFO
 --------------------------------------------------------
 
-  ALTER TABLE "BANKPLUS"."CUSTOMERINFO" ADD CONSTRAINT "CINFO" PRIMARY KEY ("USER_ID")
-  USING INDEX PCTFREE 10 INITRANS 2 MAXTRANS 255 COMPUTE STATISTICS 
+ALTER TABLE "BANKPLUS"."CUSTOMERINFO" ADD CONSTRAINT "CINFO" PRIMARY KEY ("USER_ID")
+  USING INDEX PCTFREE 10 INITRANS 2 MAXTRANS 255 COMPUTE STATISTICS
   STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
   PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1 BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
   TABLESPACE "USERS"  ENABLE;
- 
-  ALTER TABLE "BANKPLUS"."CUSTOMERINFO" MODIFY ("USER_ID" NOT NULL ENABLE);
+
+ALTER TABLE "BANKPLUS"."CUSTOMERINFO" MODIFY ("USER_ID" NOT NULL ENABLE);
 --------------------------------------------------------
 --  Constraints for Table WALLET_EXCHANGE
 --------------------------------------------------------
 
-  ALTER TABLE "BANKPLUS"."WALLET_EXCHANGE" MODIFY ("WALLET_EXCHANGE_ID" NOT NULL ENABLE);
- 
-  ALTER TABLE "BANKPLUS"."WALLET_EXCHANGE" ADD CHECK (exchange_type = 1 or exchange_type = 2 or exchange_type = 3) ENABLE;
- 
-  ALTER TABLE "BANKPLUS"."WALLET_EXCHANGE" ADD PRIMARY KEY ("WALLET_EXCHANGE_ID")
-  USING INDEX PCTFREE 10 INITRANS 2 MAXTRANS 255 COMPUTE STATISTICS 
+ALTER TABLE "BANKPLUS"."WALLET_EXCHANGE" MODIFY ("WALLET_EXCHANGE_ID" NOT NULL ENABLE);
+
+ALTER TABLE "BANKPLUS"."WALLET_EXCHANGE" ADD CHECK (exchange_type = 1 or exchange_type = 2 or exchange_type = 3) ENABLE;
+
+ALTER TABLE "BANKPLUS"."WALLET_EXCHANGE" ADD PRIMARY KEY ("WALLET_EXCHANGE_ID")
+  USING INDEX PCTFREE 10 INITRANS 2 MAXTRANS 255 COMPUTE STATISTICS
   STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
   PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1 BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
   TABLESPACE "USERS"  ENABLE;
@@ -571,23 +502,23 @@ end;
 --  Ref Constraints for Table CUSTOMERINFO
 --------------------------------------------------------
 
-  ALTER TABLE "BANKPLUS"."CUSTOMERINFO" ADD CONSTRAINT "FK_CI" FOREIGN KEY ("USER_ID")
-	  REFERENCES "BANKPLUS"."CUSTOMER" ("USER_ID") ENABLE;
+ALTER TABLE "BANKPLUS"."CUSTOMERINFO" ADD CONSTRAINT "FK_CI" FOREIGN KEY ("USER_ID")
+REFERENCES "BANKPLUS"."CUSTOMER" ("USER_ID") ENABLE;
 --------------------------------------------------------
 --  Ref Constraints for Table EMPLOYEES
 --------------------------------------------------------
 
-  ALTER TABLE "BANKPLUS"."EMPLOYEES" ADD CONSTRAINT "FK_EMP" FOREIGN KEY ("STORE_ID")
-	  REFERENCES "BANKPLUS"."STORE" ("STORE_ID") ENABLE;
+ALTER TABLE "BANKPLUS"."EMPLOYEES" ADD CONSTRAINT "FK_EMP" FOREIGN KEY ("STORE_ID")
+REFERENCES "BANKPLUS"."STORE" ("STORE_ID") ENABLE;
 --------------------------------------------------------
 --  Ref Constraints for Table WALLET
 --------------------------------------------------------
 
-  ALTER TABLE "BANKPLUS"."WALLET" ADD CONSTRAINT "FK_WACUS" FOREIGN KEY ("USER_ID")
-	  REFERENCES "BANKPLUS"."CUSTOMER" ("USER_ID") ENABLE;
+ALTER TABLE "BANKPLUS"."WALLET" ADD CONSTRAINT "FK_WACUS" FOREIGN KEY ("USER_ID")
+REFERENCES "BANKPLUS"."CUSTOMER" ("USER_ID") ENABLE;
 --------------------------------------------------------
 --  Ref Constraints for Table WALLET_HISTORY
 --------------------------------------------------------
 
-  ALTER TABLE "BANKPLUS"."WALLET_HISTORY" ADD CONSTRAINT "FK_WH" FOREIGN KEY ("USER_ID")
-	  REFERENCES "BANKPLUS"."CUSTOMER" ("USER_ID") ENABLE;
+ALTER TABLE "BANKPLUS"."WALLET_HISTORY" ADD CONSTRAINT "FK_WH" FOREIGN KEY ("USER_ID")
+REFERENCES "BANKPLUS"."CUSTOMER" ("USER_ID") ENABLE;
