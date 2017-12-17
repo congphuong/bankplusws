@@ -78,12 +78,38 @@ public class EWalletWebService {
         return new MessageResult(false, "Exchange Failed!");
     }
 
+    @RequestMapping(value = "/customer/transferqr", method = RequestMethod.POST)
+    public MessageResult transferqr(@RequestBody RequestQR code) throws Exception {
+        String result = walletDAO.decodeQR(code.getCode());
+        JSONObject jsonObject = new JSONObject();
+        try {
+            org.json.simple.parser.JSONParser parser = new org.json.simple.parser.JSONParser();
+            jsonObject = (JSONObject) parser.parse(result);
+            String idst = jsonObject.get("userTo") + "";
+            Exchange exc = new Exchange();
+            exc.setUserTo(Integer.parseInt(idst));
+            exc.setUserFrom(JwtGetUserDetail.getCurrentUserDetail().getId());
+            exc.setExchangeMoney(Double.parseDouble(jsonObject.get("exchangeMoney") + ""));
+            exc.setExchangeNote(jsonObject.get("note") + "");
+            exc.setExchangeType(3);
+            boolean tmp = walletDAO.transfer(exc);
+            if (tmp) {
+                return new MessageResult(true, "Transfer Success!");
+            } else {
+                return new MessageResult(false, "Transfer Failed!");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new MessageResult(false, "Exchange Failed!");
+    }
+
     @RequestMapping(value = "customer/encodeQRImage", method = RequestMethod.POST)
     public RequestQR encodeQR(@RequestBody QRCode qrCode) throws Exception {
         RequestQR requestQR = new RequestQR();
         JSONObject object = new JSONObject();
-        if (qrCode.getUserTo() != 0 && qrCode.getExchangeMoney() != 0) {
-            object.put("userTo", qrCode.getUserTo());
+        if (qrCode.getExchangeMoney() != 0) {
+            object.put("userTo", JwtGetUserDetail.getCurrentUserDetail().getId());
             object.put("exchangeMoney", qrCode.getExchangeMoney());
             object.put("note", qrCode.getNote());
             requestQR.setCode(walletDAO.encodeQR(object.toString()));
@@ -92,13 +118,18 @@ public class EWalletWebService {
         return requestQR;
     }
 
-    @RequestMapping(value = "customer/decodeQRImage/", method = RequestMethod.POST)
+    @RequestMapping(value = "customer/decodeQRImage", method = RequestMethod.POST)
     public JSONObject decodeQR(@RequestBody RequestQR code) throws Exception {
         String result = walletDAO.decodeQR(code.getCode());
         JSONObject jsonObject = new JSONObject();
         try {
             org.json.simple.parser.JSONParser parser = new org.json.simple.parser.JSONParser();
             jsonObject = (JSONObject) parser.parse(result);
+            String id = jsonObject.get("userTo") + "";
+            CustomerDAO cd = new CustomerDAO();
+            String username = cd.getCustDetail(Integer.parseInt(id)).getNameCustomer();
+            jsonObject.put("username",username);
+
             return jsonObject;
         } catch (Exception e) {
             e.printStackTrace();
